@@ -8,11 +8,11 @@ import sys
 if sys.platform in ['Windows', 'win32', 'cygwin']:
     import win32gui
     import uiautomation as auto
-elif sys.platform in ['Mac', 'darwin', 'os2', 'os2emx']:
-    from AppKit import NSWorkspace
-    from Foundation import *
-elif sys.platform in ['linux', 'linux2']:
-        import linux as l
+# elif sys.platform in ['Mac', 'darwin', 'os2', 'os2emx']:
+#     from AppKit import NSWorkspace
+#     from Foundation import *
+# elif sys.platform in ['linux', 'linux2']:
+#         import linux as l
 
 active_window_name = ""
 activity_name = ""
@@ -31,9 +31,9 @@ def get_active_window():
     if sys.platform in ['Windows', 'win32', 'cygwin']:
         window = win32gui.GetForegroundWindow()
         _active_window_name = win32gui.GetWindowText(window)
-    elif sys.platform in ['Mac', 'darwin', 'os2', 'os2emx']:
-        _active_window_name = (NSWorkspace.sharedWorkspace()
-                               .activeApplication()['NSApplicationName'])
+    # elif sys.platform in ['Mac', 'darwin', 'os2', 'os2emx']:
+    #     _active_window_name = (NSWorkspace.sharedWorkspace()
+    #                            .activeApplication()['NSApplicationName'])
     else:
         print("sys.platform={platform} is not supported."
               .format(platform=sys.platform))
@@ -47,12 +47,12 @@ def get_chrome_url():
         chromeControl = auto.ControlFromHandle(window)
         edit = chromeControl.EditControl()
         return 'https://' + edit.GetValuePattern().Value
-    elif sys.platform in ['Mac', 'darwin', 'os2', 'os2emx']:
-        textOfMyScript = """tell app "google chrome" to get the url of the active tab of window 1"""
-        s = NSAppleScript.initWithSource_(
-            NSAppleScript.alloc(), textOfMyScript)
-        results, err = s.executeAndReturnError_(None)
-        return results.stringValue()
+    # elif sys.platform in ['Mac', 'darwin', 'os2', 'os2emx']:
+    #     textOfMyScript = """tell app "google chrome" to get the url of the active tab of window 1"""
+    #     s = NSAppleScript.initWithSource_(
+    #         NSAppleScript.alloc(), textOfMyScript)
+    #     results, err = s.executeAndReturnError_(None)
+    #     return results.stringValue()
     else:
         print("sys.platform={platform} is not supported."
               .format(platform=sys.platform))
@@ -72,10 +72,10 @@ try:
             new_window_name = get_active_window()
             if 'Google Chrome' in new_window_name:
                 new_window_name = url_to_name(get_chrome_url())
-        if sys.platform in ['linux', 'linux2']:
-            new_window_name = l.get_active_window_x()
-            if 'Google Chrome' in new_window_name:
-                new_window_name = l.get_chrome_url_x()
+        # if sys.platform in ['linux', 'linux2']:
+        #     new_window_name = l.get_active_window_x()
+        #     if 'Google Chrome' in new_window_name:
+        #         new_window_name = l.get_chrome_url_x()
 
         
         if active_window_name != new_window_name:
